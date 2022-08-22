@@ -27,7 +27,25 @@ namespace Commander.Data
       return commands;
     }
 
+    public IEnumerable<Command> GetAllCommandsObicni()
+    {
+      var commands = new List<Command>
+            {
+                new Command{Id=0, HowTo="Obicni Boil an egg", Line="Boil water", Platform="Kettle & Pan"},
+                new Command{Id=1, HowTo="Obicni Cut bread", Line="Get a knife", Platform="knife & chopping board"},
+                new Command{Id=2, HowTo="Obicni Make cup of tea", Line="Place teabag in cup", Platform="Kettle & cup"},
+                new Command{Id=3, HowTo="Obicni Make cup of tea", Line="Place teabag in cup", Platform="Kettle & cup"}
+            };
+
+      return commands;
+    }
+
     public Command GetCommandById(int id)
+    {
+      return new Command { Id = 0, HowTo = "Boil an egg", Line = "Boil water", Platform = "Kettle & Pan" };
+    }
+
+    public Command GetCommandByIdObicni(int id)
     {
       return new Command { Id = 0, HowTo = "Boil an egg", Line = "Boil water", Platform = "Kettle & Pan" };
     }

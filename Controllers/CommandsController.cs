@@ -25,15 +25,26 @@ namespace Commander.Controllers
       _mapper = mapper;
     }
 
+    //
     //GET api/commands
     [HttpGet]
     public ActionResult<IEnumerable<CommandReadDto>> GetAllCommmands()
     {
       var commandItems = _repository.GetAllCommands();
 
-      return Ok(_mapper.Map<IEnumerable<CommandReadDto>>(commandItems));
+      return Ok(commandItems);
     }
 
+    //GET api/commands/obicni
+    [HttpGet("obicni")]
+    public ActionResult<IEnumerable<Command>> GetAllCommmandsObicni()
+    {
+      var commandItems = _repository.GetAllCommandsObicni();
+
+      return Ok(commandItems);
+    }
+
+    //
     //GET api/commands/{id}
     [HttpGet("{id}", Name = "GetCommandById")]
     public ActionResult<CommandReadDto> GetCommandById(int id)
@@ -43,9 +54,23 @@ namespace Commander.Controllers
       {
         return Ok(_mapper.Map<CommandReadDto>(commandItem));
       }
-      return NotFound();
+      return NotFound("Nisam nista nasao!");
     }
 
+    //
+    //GET api/commands/obicni/{id}
+    [HttpGet("obicni/{id}", Name = "GetCommandByIdObicni")]
+    public ActionResult<CommandReadDto> GetCommandByIdObicni(int id)
+    {
+      var commandItem = _repository.GetCommandByIdObicni(id);
+      if (commandItem != null)
+      {
+        return Ok(commandItem);
+      }
+      return NotFound("Nisam nista nasao!");
+    }
+
+    //
     //POST api/commands
     [HttpPost]
     public ActionResult<CommandReadDto> CreateCommand(CommandCreateDto commandCreateDto)
@@ -59,6 +84,7 @@ namespace Commander.Controllers
       return CreatedAtRoute(nameof(GetCommandById), new { Id = commandReadDto.Id }, commandReadDto);
     }
 
+    //
     //PUT api/commands/{id}
     [HttpPut("{id}")]
     public ActionResult UpdateCommand(int id, CommandUpdateDto commandUpdateDto)
@@ -69,11 +95,8 @@ namespace Commander.Controllers
         return NotFound();
       }
       _mapper.Map(commandUpdateDto, commandModelFromRepo);
-
       _repository.UpdateCommand(commandModelFromRepo);
-
       _repository.SaveChanges();
-
       return NoContent();
     }
 
@@ -103,6 +126,7 @@ namespace Commander.Controllers
     //   return NoContent();
     // }
 
+    //
     //DELETE api/commands/{id}
     [HttpDelete("{id}")]
     public ActionResult DeleteCommand(int id)

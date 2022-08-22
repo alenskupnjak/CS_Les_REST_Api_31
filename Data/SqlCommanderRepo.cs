@@ -40,7 +40,17 @@ namespace Commander.Data
       return _context.CommandsTable.ToList();
     }
 
+    public IEnumerable<Command> GetAllCommandsObicni()
+    {
+      return _context.CommandsTable.ToList();
+    }
+
     public Command GetCommandById(int id)
+    {
+      return _context.CommandsTable.FirstOrDefault(p => p.Id == id);
+    }
+
+    public Command GetCommandByIdObicni(int id)
     {
       return _context.CommandsTable.FirstOrDefault(p => p.Id == id);
     }
