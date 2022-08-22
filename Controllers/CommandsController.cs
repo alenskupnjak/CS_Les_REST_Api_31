@@ -6,7 +6,8 @@ using Commander.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
-
+// MS SQL Login name: CommanderAPI
+// password: 1234
 namespace Commander.Controllers
 {
 
@@ -76,32 +77,31 @@ namespace Commander.Controllers
       return NoContent();
     }
 
-    //PATCH api/commands/{id}
-    [HttpPatch("{id}")]
-    public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
-    {
-      var commandModelFromRepo = _repository.GetCommandById(id);
-      if (commandModelFromRepo == null)
-      {
-        return NotFound();
-      }
+    // //PATCH api/commands/{id}
+    // [HttpPatch("{id}")]
+    // public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
+    // {
+    //   var commandModelFromRepo = _repository.GetCommandById(id);
+    //   if (commandModelFromRepo == null)
+    //   {
+    //     return NotFound();
+    //   }
 
-      var commandToPatch = _mapper.Map<CommandUpdateDto>(commandModelFromRepo);
-      patchDoc.ApplyTo(commandToPatch, ModelState);
+    //   var commandToPatch = _mapper.Map<CommandUpdateDto>(commandModelFromRepo);
+    //   patchDoc.ApplyTo(commandToPatch, ModelState);
 
-      if (!TryValidateModel(commandToPatch))
-      {
-        return ValidationProblem(ModelState);
-      }
+    //   if (!TryValidateModel(commandToPatch))
+    //   {
+    //     return ValidationProblem(ModelState);
+    //   }
 
-      _mapper.Map(commandToPatch, commandModelFromRepo);
+    //   _mapper.Map(commandToPatch, commandModelFromRepo);
 
-      _repository.UpdateCommand(commandModelFromRepo);
+    //   _repository.UpdateCommand(commandModelFromRepo);
 
-      _repository.SaveChanges();
-
-      return NoContent();
-    }
+    //   _repository.SaveChanges();
+    //   return NoContent();
+    // }
 
     //DELETE api/commands/{id}
     [HttpDelete("{id}")]

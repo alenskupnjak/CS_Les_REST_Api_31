@@ -4,18 +4,18 @@ namespace Commander.Models
 {
   public class Command
   {
-    // [Key]
-    //[Required]
+    [Key]
+    [Required]
     public int Id { get; set; }
 
-    //[Required]
-    //[MaxLength(250)]
+    [Required]
+    [MaxLength(250)]
     public string HowTo { get; set; }
 
-    //[Required]
+    [Required]
     public string Line { get; set; }
 
-    //[Required]
+    [Required]
     public string Platform { get; set; }
   }
 }

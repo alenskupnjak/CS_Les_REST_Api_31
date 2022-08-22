@@ -11,16 +11,23 @@ using Microsoft.AspNetCore.Mvc;
 namespace Commander.Controllers
 {
 
-  [Route("api/commandsalen")]
+  [Route("api/alen")]
   [ApiController]
   public class CommandsAlenController : ControllerBase
   {
-    private readonly MockCommanderRepo _repository = new MockCommanderRepo();
+    private readonly ICommanderRepo _repository;
+
+    // private readonly MockCommanderRepo _repository = new MockCommanderRepo();
 
 
 
+    public CommandsAlenController(ICommanderRepo repository)
+    {
+      _repository = repository;
+      // _mapper = mapper;
+    }
 
-    //GET api/commands
+    //GET api/alen
     [HttpGet]
     public ActionResult<IEnumerable<Command>> GetAllCommmands()
     {
@@ -29,7 +36,7 @@ namespace Commander.Controllers
       return Ok(commandItems);
     }
 
-    //GET api/commands/{id}
+    //GET api/alen/{id}
     [HttpGet("{id}")]
     public ActionResult<Command> GetCommandById(int id)
     {
