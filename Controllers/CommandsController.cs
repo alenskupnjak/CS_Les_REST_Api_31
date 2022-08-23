@@ -31,7 +31,6 @@ namespace Commander.Controllers
     public ActionResult<IEnumerable<CommandReadDto>> GetAllCommmands()
     {
       var commandItems = _repository.GetAllCommands();
-
       return Ok(commandItems);
     }
 
@@ -40,12 +39,12 @@ namespace Commander.Controllers
     public ActionResult<IEnumerable<Command>> GetAllCommmandsObicni()
     {
       var commandItems = _repository.GetAllCommandsObicni();
-
       return Ok(commandItems);
     }
 
     //
     //GET api/commands/{id}
+    // Name mora biti isto kao i naziv funkcije!
     [HttpGet("{id}", Name = "GetCommandById")]
     public ActionResult<CommandReadDto> GetCommandById(int id)
     {
@@ -73,72 +72,64 @@ namespace Commander.Controllers
     //
     //POST api/commands
     [HttpPost]
-    public ActionResult<CommandReadDto> CreateCommand(CommandCreateDto commandCreateDto)
+    public ActionResult<CommandReadDto> CreateCommand(CommandCreateDto data)
     {
-      var commandModel = _mapper.Map<Command>(commandCreateDto);
-      _repository.CreateCommand(commandModel);
+      var model = _mapper.Map<Command>(data);
+      _repository.CreateCommand(model);
       _repository.SaveChanges();
-
-      var commandReadDto = _mapper.Map<CommandReadDto>(commandModel);
-
-      return CreatedAtRoute(nameof(GetCommandById), new { Id = commandReadDto.Id }, commandReadDto);
+      var dataReadDto = _mapper.Map<CommandReadDto>(model);
+      return CreatedAtRoute(nameof(GetCommandById), new { Id = dataReadDto.Id }, dataReadDto);
     }
 
     //
     //PUT api/commands/{id}
     [HttpPut("{id}")]
-    public ActionResult UpdateCommand(int id, CommandUpdateDto commandUpdateDto)
+    public ActionResult UpdateCommand(int id, CommandUpdateDto data)
+    {
+      var modelFromRepo = _repository.GetCommandById(id);
+      if (modelFromRepo == null)
+      {
+        return NotFound("Nisam napravio update, nisam naso podatak!");
+      }
+      _mapper.Map(data, modelFromRepo);
+      _repository.UpdateCommand(modelFromRepo);
+      _repository.SaveChanges();
+      return NoContent();
+    }
+
+    // //PATCH api/commands/{id}
+    [HttpPatch("{id}")]
+    public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
     {
       var commandModelFromRepo = _repository.GetCommandById(id);
       if (commandModelFromRepo == null)
       {
         return NotFound();
       }
-      _mapper.Map(commandUpdateDto, commandModelFromRepo);
+      var commandToPatch = _mapper.Map<CommandUpdateDto>(commandModelFromRepo);
+      patchDoc.ApplyTo(commandToPatch, ModelState);
+      if (!TryValidateModel(commandToPatch))
+      {
+        return ValidationProblem(ModelState);
+      }
+      _mapper.Map(commandToPatch, commandModelFromRepo);
       _repository.UpdateCommand(commandModelFromRepo);
       _repository.SaveChanges();
       return NoContent();
     }
-
-    // //PATCH api/commands/{id}
-    // [HttpPatch("{id}")]
-    // public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
-    // {
-    //   var commandModelFromRepo = _repository.GetCommandById(id);
-    //   if (commandModelFromRepo == null)
-    //   {
-    //     return NotFound();
-    //   }
-
-    //   var commandToPatch = _mapper.Map<CommandUpdateDto>(commandModelFromRepo);
-    //   patchDoc.ApplyTo(commandToPatch, ModelState);
-
-    //   if (!TryValidateModel(commandToPatch))
-    //   {
-    //     return ValidationProblem(ModelState);
-    //   }
-
-    //   _mapper.Map(commandToPatch, commandModelFromRepo);
-
-    //   _repository.UpdateCommand(commandModelFromRepo);
-
-    //   _repository.SaveChanges();
-    //   return NoContent();
-    // }
 
     //
     //DELETE api/commands/{id}
     [HttpDelete("{id}")]
     public ActionResult DeleteCommand(int id)
     {
-      var commandModelFromRepo = _repository.GetCommandById(id);
-      if (commandModelFromRepo == null)
+      var data = _repository.GetCommandById(id);
+      if (data == null)
       {
-        return NotFound();
+        return NotFound("Nema tog zapisa nisam mogao obrisati.");
       }
-      _repository.DeleteCommand(commandModelFromRepo);
+      _repository.DeleteCommand(data);
       _repository.SaveChanges();
-
       return NoContent();
     }
 

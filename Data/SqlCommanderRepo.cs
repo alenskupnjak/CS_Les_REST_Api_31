@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Commander.Models;
 
 namespace Commander.Data
@@ -18,11 +19,11 @@ namespace Commander.Data
 
     public void CreateCommand(Command cmd)
     {
+      Console.WriteLine("Value {0} ", cmd);
       if (cmd == null)
       {
         throw new ArgumentNullException(nameof(cmd));
       }
-
       _context.CommandsTable.Add(cmd);
     }
 
@@ -47,7 +48,21 @@ namespace Commander.Data
 
     public Command GetCommandById(int id)
     {
-      return _context.CommandsTable.FirstOrDefault(p => p.Id == id);
+      var data = _context.CommandsTable.FirstOrDefault(p => p.Id == id);
+      Type t = data?.GetType();
+      if (t is object)
+      {
+        Console.WriteLine("Type is: {0} Id={1}", t.Name, id);
+        Console.WriteLine(data);
+        PropertyInfo[] props = t.GetProperties();
+        Console.WriteLine("Properties (N = {0}):", props.Length);
+        foreach (var prop in props)
+          if (prop.GetIndexParameters().Length == 0)
+            Console.WriteLine("   {0} ({1}): {2}", prop.Name, prop.PropertyType.Name, prop.GetValue(data));
+          else
+            Console.WriteLine("   {0} ({1}): <Indexed>", prop.Name, prop.PropertyType.Name);
+      }
+      return data;
     }
 
     public Command GetCommandByIdObicni(int id)
@@ -62,6 +77,7 @@ namespace Commander.Data
 
     public void UpdateCommand(Command cmd)
     {
+      Console.WriteLine("Ja sam u UpdateCommand");
       //Nothing
     }
   }

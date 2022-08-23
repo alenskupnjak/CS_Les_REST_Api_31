@@ -9,6 +9,7 @@ namespace Commander.Profiles
         public CommandsProfile()
         {
             //Source -> Target
+            // ovdije se mapiraju podaci
             CreateMap<Command, CommandReadDto>();
             CreateMap<CommandCreateDto, Command>();
             CreateMap<CommandUpdateDto, Command>();

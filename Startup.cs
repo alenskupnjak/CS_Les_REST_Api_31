@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Serialization;
 
 // https://www.youtube.com/watch?v=fmvcAzHpsk8
 
@@ -33,7 +34,12 @@ namespace Commander
       services.AddDbContext<CommanderContext>(opt => opt.UseSqlServer
          (Configuration.GetConnectionString("CommanderConnection")));
 
-      services.AddControllers();
+      // services.AddControllers();
+
+      services.AddControllers().AddNewtonsoftJson(s =>
+        {
+          s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        });
 
       services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -45,9 +51,6 @@ namespace Commander
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-
-
-
 
       if (env.IsDevelopment())
       {
