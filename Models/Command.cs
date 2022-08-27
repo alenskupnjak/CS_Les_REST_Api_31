@@ -9,7 +9,7 @@ namespace Commander.Models
     public int Id { get; set; }
 
     [Required]
-    [MaxLength(250)]
+    [MaxLength(200)]
     public string HowTo { get; set; }
 
     [Required]
