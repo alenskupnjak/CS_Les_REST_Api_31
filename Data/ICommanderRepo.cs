@@ -1,7 +1,8 @@
-using System.Collections.Generic;
 using Commander.Models;
+using System.Collections.Generic;
 
-namespace Commander.Data
+
+namespace Commander
 {
   public interface ICommanderRepo
   {

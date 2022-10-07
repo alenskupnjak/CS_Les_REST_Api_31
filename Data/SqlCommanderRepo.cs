@@ -15,8 +15,6 @@ namespace Commander.Data
       _context = context;
     }
 
-
-
     public void CreateCommand(Command cmd)
     {
       Console.WriteLine("Value {0} ", cmd);

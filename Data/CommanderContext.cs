@@ -7,10 +7,7 @@ namespace Commander.Data
   {
     public CommanderContext(DbContextOptions<CommanderContext> opt) : base(opt)
     {
-
     }
-
     public DbSet<Command> CommandsTable { get; set; }
-
   }
 }
