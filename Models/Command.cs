@@ -4,7 +4,7 @@ namespace Commander.Models
 {
   public class Command
   {
-    [Key]
+    [Key] // nije potrabno
     [Required]
     public int Id { get; set; }
 
@@ -17,5 +17,7 @@ namespace Commander.Models
 
     [Required]
     public string Platform { get; set; }
+    [Required]
+    public string Dodatak { get; set; }
   }
 }

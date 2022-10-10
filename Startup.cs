@@ -26,18 +26,16 @@ namespace Commander
     public void ConfigureServices(IServiceCollection services)
     {
 
-      services.AddDbContext<CommanderContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
+      services.AddDbContext<CommanderContext>(opt => 
+          opt.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
 
-      // Packet Manager Console
-      // Add-Migration "neko Ime"
-      // Update-Database
 
-      // services.AddControllers();
-
+      // Ovo je za pATCH.....
       services.AddControllers().AddNewtonsoftJson(s =>
         {
           s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         });
+
 
       services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

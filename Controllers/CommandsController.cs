@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using AutoMapper;
-using Commander.Data;
 using Commander.Dtos;
 using Commander.Models;
 using Microsoft.AspNetCore.JsonPatch;
@@ -10,9 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 // password: 1234
 namespace Commander.Controllers
 {
-
-  [Route("api/commands")]
-  // [Route("api/[controller]")]
+  [Route("api/[controller]")]     // ili [Route("api/commands")]
   [ApiController]
   public class CommandsController : ControllerBase
   {
@@ -25,55 +22,33 @@ namespace Commander.Controllers
       _mapper = mapper;
     }
 
-    //
-    //GET api/commands
+    /// GET api/commands
     [HttpGet]
-    public ActionResult<IEnumerable<CommandReadDto>> xxx()
+    public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands()
     {
       var commandItems = _repository.GetAllCommands();
-      return Ok(commandItems);
+      return Ok(_mapper.Map<IEnumerable<CommandReadDto>>(commandItems));
     }
 
-    //GET api/commands/obicni
-    [HttpGet("obicni")]
-    public ActionResult<IEnumerable<Command>> GetAllCommmandsObicni()
-    {
-      var commandItems = _repository.GetAllCommandsObicni();
-      return Ok(commandItems);
-    }
-
-    //
-    //GET api/commands/{id}
-    // Name mora biti isto kao i naziv funkcije!
+    /// GET api/commands/{id}
     [HttpGet("{id}", Name = "GetCommandById")]
     public ActionResult<CommandReadDto> GetCommandById(int id)
     {
       var commandItem = _repository.GetCommandById(id);
       if (commandItem != null)
       {
+        // mapiranje podataka u novi, prazan CommandReadDto
         return Ok(_mapper.Map<CommandReadDto>(commandItem));
       }
       return NotFound("Nisam nista nasao!");
     }
 
-    //
-    //GET api/commands/obicni/{id}
-    [HttpGet("obicni/{id}", Name = "GetCommandByIdObicni")]
-    public ActionResult<CommandReadDto> GetCommandByIdObicni(int id)
-    {
-      var commandItem = _repository.GetCommandByIdObicni(id);
-      if (commandItem != null)
-      {
-        return Ok(commandItem);
-      }
-      return NotFound("Nisam nista nasao!");
-    }
 
-    //
-    //POST api/commands
+    /// POST api/commands/
     [HttpPost]
     public ActionResult<CommandReadDto> CreateCommand(CommandCreateDto data)
     {
+      //
       var model = _mapper.Map<Command>(data);
       _repository.CreateCommand(model);
       _repository.SaveChanges();
@@ -81,23 +56,23 @@ namespace Commander.Controllers
       return CreatedAtRoute(nameof(GetCommandById), new { Id = dataReadDto.Id }, dataReadDto);
     }
 
-    //
-    //PUT api/commands/{id}
+    /// PUT api/commands/
     [HttpPut("{id}")]
     public ActionResult UpdateCommand(int id, CommandUpdateDto data)
     {
-      var modelFromRepo = _repository.GetCommandById(id);
+      Command modelFromRepo = _repository.GetCommandById(id); 
       if (modelFromRepo == null)
       {
         return NotFound("Nisam napravio update, nisam naso podatak!");
       }
-      _mapper.Map(data, modelFromRepo);
-      _repository.UpdateCommand(modelFromRepo);
+      _mapper.Map(data, modelFromRepo); // smjer podataka FROM data => modelFromRepo
+      _repository.UpdateCommand(modelFromRepo); // best practice ....suvišno
       _repository.SaveChanges();
       return NoContent();
     }
 
-    // //PATCH api/commands/{id}
+
+    /// UPDATE sa PATC..
     [HttpPatch("{id}")]
     public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
     {
@@ -118,8 +93,8 @@ namespace Commander.Controllers
       return NoContent();
     }
 
-    //
-    //DELETE api/commands/{id}
+
+     // DELETE
     [HttpDelete("{id}")]
     public ActionResult DeleteCommand(int id)
     {

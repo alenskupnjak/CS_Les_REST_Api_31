@@ -1,19 +1,16 @@
-using AutoMapper;
-using Commander.Dtos;
-using Commander.Models;
 
 namespace Commander.Profiles
 {
-    public class CommandsProfile : Profile
-    {
+    public class CommandsProfile : AutoMapper.Profile
+  {
         public CommandsProfile()
         {
             //Source -> Target
             // ovdije se mapiraju podaci
-            CreateMap<Command, CommandReadDto>();
-            CreateMap<CommandCreateDto, Command>();
-            CreateMap<CommandUpdateDto, Command>();
-            CreateMap<Command, CommandUpdateDto>();
+            CreateMap<Models.Command, Dtos.CommandReadDto>();
+            CreateMap<Dtos.CommandCreateDto, Models.Command>();
+            CreateMap<Dtos.CommandUpdateDto, Models.Command>();
+            CreateMap<Models.Command, Dtos.CommandUpdateDto>();
         }
 
     }

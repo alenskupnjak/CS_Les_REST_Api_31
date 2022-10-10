@@ -13,5 +13,8 @@ namespace Commander.Dtos
 
     [Required]
     public string Platform { get; set; }
+
+    [Required]
+    public string Dodatak { get; set; }
   }
 }

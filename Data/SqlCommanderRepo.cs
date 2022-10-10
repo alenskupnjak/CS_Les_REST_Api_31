@@ -9,15 +9,15 @@ namespace Commander.Data
   public class SqlCommanderRepo : ICommanderRepo
   {
     private readonly CommanderContext _context;
-
     public SqlCommanderRepo(CommanderContext context)
     {
       _context = context;
     }
 
+    // Krairanje zapisa BAZI
     public void CreateCommand(Command cmd)
     {
-      Console.WriteLine("Value {0} ", cmd);
+      Console.WriteLine("Value koju printam u konzoli {0} ", cmd);
       if (cmd == null)
       {
         throw new ArgumentNullException(nameof(cmd));
@@ -25,6 +25,8 @@ namespace Commander.Data
       _context.CommandsTable.Add(cmd);
     }
 
+
+    // Brisanje zapisa u bazi
     public void DeleteCommand(Command cmd)
     {
       if (cmd == null)
@@ -34,16 +36,17 @@ namespace Commander.Data
       _context.CommandsTable.Remove(cmd);
     }
 
+
     public IEnumerable<Command> GetAllCommands()
     {
       return _context.CommandsTable.ToList();
     }
 
-    public IEnumerable<Command> GetAllCommandsObicni()
-    {
-      return _context.CommandsTable.ToList();
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     public Command GetCommandById(int id)
     {
       var data = _context.CommandsTable.FirstOrDefault(p => p.Id == id);
@@ -63,20 +66,17 @@ namespace Commander.Data
       return data;
     }
 
-    public Command GetCommandByIdObicni(int id)
-    {
-      return _context.CommandsTable.FirstOrDefault(p => p.Id == id);
-    }
-
+    // Snimanje podataka u bazi
     public bool SaveChanges()
     {
       return (_context.SaveChanges() >= 0);
     }
 
+    // UPDATE
     public void UpdateCommand(Command cmd)
     {
       Console.WriteLine("Ja sam u UpdateCommand");
-      //Nothing
+      // Ne treba nista, ovo je samo da se zadovolji forma jer Intarface mora viti pokriven...
     }
   }
 }
