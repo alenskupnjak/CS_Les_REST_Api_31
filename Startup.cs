@@ -26,9 +26,8 @@ namespace Commander
     public void ConfigureServices(IServiceCollection services)
     {
 
-      services.AddDbContext<CommanderContext>(opt => 
+      services.AddDbContext<CommanderContext>(opt =>
           opt.UseSqlServer(Configuration.GetConnectionString("CommanderConnection")));
-
 
       // Ovo je za pATCH.....
       services.AddControllers().AddNewtonsoftJson(s =>
@@ -36,14 +35,18 @@ namespace Commander
           s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         });
 
-
       services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+      // fake data
       // services.AddScoped<ICommanderRepo, MockCommanderRepo>();
       services.AddScoped<ICommanderRepo, SqlCommanderRepo>();
 
     }
 
+    /// <summary>
+    /// </summary>
+    /// <param name="app"></param>
+    /// <param name="env"></param>
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {

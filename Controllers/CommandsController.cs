@@ -15,21 +15,23 @@ namespace Commander.Controllers
   {
     private readonly ICommanderRepo _repository;
     private readonly IMapper _mapper;
-
     public CommandsController(ICommanderRepo repository, IMapper mapper)
     {
       _repository = repository;
       _mapper = mapper;
     }
 
+
     /// GET api/commands
     [HttpGet]
     public ActionResult<IEnumerable<CommandReadDto>> GetAllCommands()
     {
       var commandItems = _repository.GetAllCommands();
+      //return Ok(commandItems);
       return Ok(_mapper.Map<IEnumerable<CommandReadDto>>(commandItems));
     }
 
+    //
     /// GET api/commands/{id}
     [HttpGet("{id}", Name = "GetCommandById")]
     public ActionResult<CommandReadDto> GetCommandById(int id)
@@ -43,7 +45,7 @@ namespace Commander.Controllers
       return NotFound("Nisam nista nasao!");
     }
 
-
+    //
     /// POST api/commands/
     [HttpPost]
     public ActionResult<CommandReadDto> CreateCommand(CommandCreateDto data)
@@ -56,22 +58,26 @@ namespace Commander.Controllers
       return CreatedAtRoute(nameof(GetCommandById), new { Id = dataReadDto.Id }, dataReadDto);
     }
 
-    /// PUT api/commands/
+    // UPDATE UPDATE UPDATE
+    /// PUT api/commands/{id}
     [HttpPut("{id}")]
     public ActionResult UpdateCommand(int id, CommandUpdateDto data)
     {
-      Command modelFromRepo = _repository.GetCommandById(id); 
+      Command modelFromRepo = _repository.GetCommandById(id);
       if (modelFromRepo == null)
       {
         return NotFound("Nisam napravio update, nisam naso podatak!");
       }
+
+      // drugaciji zapis automappera... isto je.
+      //_mapper.Map<modelFromRepo>(data)
       _mapper.Map(data, modelFromRepo); // smjer podataka FROM data => modelFromRepo
-      _repository.UpdateCommand(modelFromRepo); // best practice ....suvišno
+      _repository.UpdateCommand(modelFromRepo); // best practice ....suvisno
       _repository.SaveChanges();
       return NoContent();
     }
 
-
+    //
     /// UPDATE sa PATC..
     [HttpPatch("{id}")]
     public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
@@ -94,7 +100,7 @@ namespace Commander.Controllers
     }
 
 
-     // DELETE
+    // DELETE
     [HttpDelete("{id}")]
     public ActionResult DeleteCommand(int id)
     {

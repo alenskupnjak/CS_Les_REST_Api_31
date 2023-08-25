@@ -5,28 +5,19 @@ namespace Commander.Data
 {
   public class MockCommanderRepo : ICommanderRepo
   {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="cmd"></param>
-    /// <exception cref="System.NotImplementedException"></exception>
+    // CREATE CREATE CREATE
     public void CreateCommand(Command cmd)
     {
       throw new System.NotImplementedException();
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="cmd"></param>
-    /// <exception cref="System.NotImplementedException"></exception>
+
+    // DELETE DELETE
     public void DeleteCommand(Command cmd)
     {
       throw new System.NotImplementedException();
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
+
+    // GET GET GET
     public IEnumerable<Command> GetAllCommands()
     {
       var commands = new List<Command>
@@ -38,33 +29,19 @@ namespace Commander.Data
       return commands;
     }
 
+    // GET ONE
     public Command GetCommandById(int id)
     {
       return new Command { Id = 0, HowTo = "Boil an egg", Line = "Boil water", Platform = "Kettle & Pan" };
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    public Command GetCommandByIdObicni(int id)
-    {
-      return new Command { Id = 0, HowTo = "Boil an egg", Line = "Boil water", Platform = "Kettle & Pan" };
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="System.NotImplementedException"></exception>
+    
+    // SAVE SAVE 
     public bool SaveChanges()
     {
       throw new System.NotImplementedException();
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="cmd"></param>
-    /// <exception cref="System.NotImplementedException"></exception>
+
+    // UPDATE UPDATE UPDATE UPDATE UPDATE
     public void UpdateCommand(Command cmd)
     {
       throw new System.NotImplementedException();

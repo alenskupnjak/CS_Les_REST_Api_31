@@ -1,4 +1,5 @@
 
+using Commander.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Commander.Data
@@ -8,6 +9,6 @@ namespace Commander.Data
     public CommanderContext(DbContextOptions<CommanderContext> opt) : base(opt)
     {
     }
-    public DbSet<Models.Command> CommandsTable { get; set; }
+    public DbSet<Command> CommandsTable { get; set; }
   }
 }

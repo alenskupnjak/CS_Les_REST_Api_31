@@ -4,7 +4,7 @@ namespace Commander.Models
 {
   public class Command
   {
-    [Key] // nije potrabno
+    [Key] // nije potrebno
     [Required]
     public int Id { get; set; }
 

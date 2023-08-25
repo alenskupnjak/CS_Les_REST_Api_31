@@ -26,7 +26,7 @@ namespace Commander.Data
     }
 
 
-    // Brisanje zapisa u bazi
+    // DELETE DELETE DELETE
     public void DeleteCommand(Command cmd)
     {
       if (cmd == null)
@@ -42,33 +42,30 @@ namespace Commander.Data
       return _context.CommandsTable.ToList();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    // GET ONE
     public Command GetCommandById(int id)
     {
       var data = _context.CommandsTable.FirstOrDefault(p => p.Id == id);
-      Type t = data?.GetType();
-      if (t is object)
-      {
-        Console.WriteLine("Type is: {0} Id={1}", t.Name, id);
-        Console.WriteLine(data);
-        PropertyInfo[] props = t.GetProperties();
-        Console.WriteLine("Properties (N = {0}):", props.Length);
-        foreach (var prop in props)
-          if (prop.GetIndexParameters().Length == 0)
-            Console.WriteLine("   {0} ({1}): {2}", prop.Name, prop.PropertyType.Name, prop.GetValue(data));
-          else
-            Console.WriteLine("   {0} ({1}): <Indexed>", prop.Name, prop.PropertyType.Name);
-      }
+      //Type t = data?.GetType();
+      //if (t is object)
+      //{
+      //  Console.WriteLine("Type is: {0} Id={1}", t.Name, id);
+      //  Console.WriteLine(data);
+      //  PropertyInfo[] props = t.GetProperties();
+      //  Console.WriteLine("Properties (N = {0}):", props.Length);
+      //  foreach (var prop in props)
+      //    if (prop.GetIndexParameters().Length == 0)
+      //      Console.WriteLine("   {0} ({1}): {2}", prop.Name, prop.PropertyType.Name, prop.GetValue(data));
+      //    else
+      //      Console.WriteLine("   {0} ({1}): <Indexed>", prop.Name, prop.PropertyType.Name);
+      //}
       return data;
     }
 
     // Snimanje podataka u bazi
     public bool SaveChanges()
     {
+      Console.WriteLine("Ja sam u SaveChanges ");
       return (_context.SaveChanges() >= 0);
     }
 
